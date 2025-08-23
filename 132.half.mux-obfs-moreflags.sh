@@ -3,14 +3,14 @@ set -e
 
 INSTALL_DIR="/root/packettunnel"
 SERVICE_FILE="/etc/systemd/system/packettunnel.service"
-CORE_URL="https://raw.githubusercontent.com/NIKA1371/packet-tcp-new/main/core.json"
-WATERWALL_URL="https://raw.githubusercontent.com/NIKA1371/packet-tcp-new/main/Waterwall"
+CORE_URL="https://raw.githubusercontent.com/NIKA1371/packet-old-hom/main/core.json"
+WATERWALL_URL="https://raw.githubusercontent.com/NIKA1371/packet-old-hom/main/Waterwall"
 
 log() {
     echo -e "[+] $1"
 }
 
-# ÍĞİ äÕÈ
+# ÃÃÃ Ã¤Ã•Ãˆ
 if [[ "$1" == "--uninstall" ]]; then
     echo "[*] Stopping PacketTunnel service..."
     systemctl stop packettunnel.service 2>/dev/null
@@ -37,7 +37,7 @@ if [[ "$1" == "--uninstall" ]]; then
     exit 0
 fi
 
-# ÈÑÑÓí äÈæÏ ÂÑæãÇä
+# ÃˆÃ‘Ã‘Ã“Ã­ Ã¤ÃˆÃ¦Ã Ã‚Ã‘ÂÃ¦Ã£Ã‡Ã¤
 if [[ $# -eq 0 ]]; then
     echo "? No arguments provided."
     echo "Usage:"
@@ -46,7 +46,7 @@ if [[ $# -eq 0 ]]; then
     exit 1
 fi
 
-# ÇÑÓ ÂÑæãÇäåÇ
+# ÂÃ‡Ã‘Ã“ Ã‚Ã‘ÂÃ¦Ã£Ã‡Ã¤ÂÃ¥Ã‡
 ROLE=""
 IP_IRAN=""
 IP_KHAREJ=""
@@ -75,8 +75,8 @@ if [[ -z "$ROLE" || -z "$IP_IRAN" || -z "$IP_KHAREJ" ]]; then
     exit 1
 fi
 
-# ÑÏÇÒÔ İáåÇ
-JSON_FLAGS="[\"ack\",\"urg\"]" # íÔİÑÖ ŞÏíãí
+# ÂÃ‘ÃÃ‡Ã’Ã” ÃÃ¡ÂÂÃ¥Ã‡
+JSON_FLAGS="[\"ack\",\"urg\"]" # ÂÃ­Ã”ÂÃÃ‘Ã– ÃÃÃ­Ã£Ã­
 if [[ -n "$FLAGS" ]]; then
     IFS='-' read -r -a FLAG_ARRAY <<< "$FLAGS"
     JSON_FLAGS=$(printf '"%s",' "${FLAG_ARRAY[@]}")
@@ -93,7 +93,7 @@ chmod +x Waterwall
 log "Downloading core.json..."
 curl -fsSL "$CORE_URL" -o core.json
 
-# ÊæáíÏ config ÓãÊ ÇíÑÇä
+# ÃŠÃ¦Ã¡Ã­Ã config Ã“Ã£ÃŠ Ã‡Ã­Ã‘Ã‡Ã¤
 if [[ "$ROLE" == "iran" ]]; then
     cat > "$INSTALL_DIR/config.json" <<EOF
 {
@@ -124,7 +124,7 @@ EOF
     echo "}" >> config.json
 fi
 
-# ÊæáíÏ config ÓãÊ ÎÇÑÌ
+# ÃŠÃ¦Ã¡Ã­Ã config Ã“Ã£ÃŠ ÃÃ‡Ã‘ÃŒ
 if [[ "$ROLE" == "kharej" ]]; then
     cat > "$INSTALL_DIR/config.json" <<EOF
 {
@@ -191,7 +191,7 @@ systemctl daemon-reexec
 systemctl enable packettunnel.service
 systemctl restart packettunnel.service
 
-# ÊÇíãÑ ÑíÇÓÊÇÑÊ
+# ÃŠÃ‡Ã­Ã£Ã‘ Ã‘Ã­ÂÃ‡Ã“ÃŠÃ‡Ã‘ÃŠ
 log "Creating 10-minute restart timer..."
 cat > /etc/systemd/system/packettunnel-restart.service <<EOF
 [Unit]
